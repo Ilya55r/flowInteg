@@ -10,6 +10,9 @@ public class Gauss{
 	public void setMatrix(double[][] mat){
 		matrix = mat;
 	}
-
-
+	
+	public double[][] getMatrix(){
+		return matrix;
+	}
+	
 }
