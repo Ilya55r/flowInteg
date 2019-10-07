@@ -14,5 +14,8 @@ public class Gauss{
 	public double[][] getMatrix(){
 		return matrix;
 	}
+	public static void main(String[] args){
+		
+	}
 	
 }
