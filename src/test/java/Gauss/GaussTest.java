@@ -9,9 +9,9 @@ import static org.junit.Assert.*;
 public class GaussTest {
     @Test 
 	public void testGaussResult() {
-        Gauss gauss = new Gauss();
+        Gauss gauss = new Gauss(3);
 		
-		Assert.assertEquals(
+		//Assert.assertEquals(
        
     }
 }

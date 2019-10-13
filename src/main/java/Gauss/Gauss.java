@@ -4,9 +4,11 @@ package linearEquationSystem;
 public class Gauss{
 	private int varNum;
 	private double[][] matrix;
+	private double[] result;
 	
 	public Gauss(int num){
 		varNum = num;
+		result = new double[num];
 	}
 	
 	public void setMatrix(double[][] mat){
@@ -17,14 +19,31 @@ public class Gauss{
 		return matrix;
 	}
 	
+	public double[] getResult(){
+			return result;
+	}
+	
 	public void calculate(){
 		for (int i = 0;i<varNum;i++)
-			for (int j = j+1; j < varNum; j++){
-				double num = array[j][i]/(matrix[i][i]);
+			for (int j = i+1; j < varNum; j++){
+				double num = matrix[j][i]/(matrix[i][i]);
 				
 				for (int k = j; k < varNum; k++)
-					array[j][k] = array[j][k]-(array[i][k]*num);
+					matrix[j][k] = matrix[j][k]-(matrix[i][k]*num);
 			}
+			
+	for (int i = varNum - 1; i >= 0; i--){
+		
+		result[i] = matrix[i][varNum] / matrix[i][i];
+		
+		for (int j = i - 1; j >=0; j--){
+			matrix[j][varNum]-= matrix[j][i] * result[i];
+			matrix[j][i] = 0;
+		}
+			
+	
+	}
+	
 			
 			
 		
