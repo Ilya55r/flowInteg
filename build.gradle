@@ -9,45 +9,70 @@
 plugins {
     // Apply the java plugin to add support for Java
     id 'java'
-	
     // Apply the application plugin to add support for building a CLI application
     id 'application'
-	//id 'checkstyle'
-	id 'findbugs'
+	id 'checkstyle'
+	//id 'spotbugs'
+	id "com.github.spotbugs" version "2.0.1"
+	
 }
 
-findbugs {
-    ignoreFailures = false
-    toolVersion = "3.0.1"
-    sourceSets=[sourceSets.main]
-    excludeFilter = file("config/findbugs/excludeFilter.xml")
-    reportsDir = file("$project.buildDir/reports/findbugs")
-    effort = "max"
+checkstyle {  
+	project.ext.checkstyleVersion = '8.20'
+    ignoreFailures = true
+    configFile = rootProject.file('config/checkstyle/google_checks.xml')
+	//configDir = file("$rootProject.projectDir/config/checkstyle")
 }
-tasks.withType(FindBugs) {
+
+tasks.withType(Checkstyle) {
     reports {
         xml.enabled false
         html.enabled true
+        //html.stylesheet resources.text.fromFile('config/xsl/checkstyle-custom.xsl')
     }
 }
+
+
+spotbugs {
+  toolVersion = '4.0.0-beta4'
+  ignoreFailures=true
+}
+
+sourceSets {
+  // we define `main` sourceSet here, so SpotBugs Gradle Plugin generates `spotbugsMain` task
+  main {
+    java.srcDirs = ['src/main/java']
+  }
+}
+
+tasks.withType(com.github.spotbugs.SpotBugsTask) {
+  // configure automatically generated tasks
+}
+
+
 test {
     useJUnitPlatform()
 }
 repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
+	//https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs
     jcenter()
+	//	mavenCentral()
 }
 
 dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:28.0-jre'
-
+	
     // Use JUnit test framework
     //testImplementation 'junit:junit:4.13-rc-1'
-	
+
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+	
+	//classpath "com.github.spotbugs:spotbugs-gradle-plugin:2.0.1"
+	//spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
 }
 
 application {
